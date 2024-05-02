@@ -37,14 +37,13 @@ main {
 .div-left-pain-wrapper {
     width: 300px;
     /* background-color: red; */
-}**
+}
 
 .div-right-pain-wrapper {
     width: 80%;
     /* IE8以下とAndroid4.3以下用フォールバック */
     width: -webkit-calc(100% - 300px);
     width: calc(100% - 300px);
-    background-color: yellow;
 }
 
 .div-right-pain-wrapper textarea{
@@ -67,12 +66,12 @@ ul.dir li {
 }
 
 li.folder {
-    background-image: url('/img/folder.png');
+    background-image: url('../img/folder.png');
     background-size: 30px;
 }
 
 li.file {
-    background-image: url('/img/file.png');
+    background-image: url('../img/file.png');
     background-size: 30px;
     height: 30px;
 }
@@ -83,4 +82,8 @@ li.file {
 
 footer {
     text-align: center;
+}
+
+.found-file{
+    color: red;
 }

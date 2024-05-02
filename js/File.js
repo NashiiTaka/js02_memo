@@ -21,6 +21,10 @@ export function setActiveFile(file) {
     }
 }
 
+export function removeFound(){
+    $('.found-file').removeClass('found-file');
+}
+
 export class File {
     #parentFolder = null;
     #jqElem = null;
@@ -107,5 +111,9 @@ export class File {
         return (e) => {
             setActiveFile(me);
         }
+    }
+
+    markFound(){
+        this.jqElem.children('span:first-child').addClass('found-file');
     }
 }

@@ -1,5 +1,5 @@
 import { Folder, activeFolder, setActiveFolder } from "./Folder.js";
-import { File, setActiveFile } from "./File.js";
+import { File, setActiveFile, removeFound, activeFile } from "./File.js";
 
 // localStorage.clear();
 const explorer = $('#explorer-container');
@@ -31,17 +31,73 @@ $(() => {
 
 });
 
-$('#folder-add').click(function() {
+$('#folder-add').on('click', () => {
     const folder = activeFolder.appendChildFolder({ name: null });
     setActiveFolder(folder);
     localStorage.setItem('fileTree', JSON.stringify(rootFolder));
 });
 
-$('#file-add').click(function() {
+$('#file-add').on('click', () => {
     const file = activeFolder.appendChildFile({ name: null });
     setActiveFile(file);
     localStorage.setItem('fileTree', JSON.stringify(rootFolder));
 });
+
+let preSeachWord = null;
+$('.find').on('keyup', execFind);
+$('.find').on('keydown', execFind);
+$('.find').on('keychange', execFind);
+
+function execFind(){
+    let v = $('.find').val();
+    if(!v){
+        removeFound();
+        return;
+    }
+
+    if(preSeachWord != v){
+        removeFound();
+        findRecursive(rootFolder, v);
+        preSeachWord = v;
+    }
+}
+
+let preMemo = null;
+let preSavedTime = null;
+let timerID = null;
+$('#memo').on('keyup', autoSave);
+$('#memo').on('keydown', autoSave);
+$('#memo').on('change', autoSave);
+function autoSave(){
+    let v = $('#memo').val();
+
+    if(v == preMemo){ return; }
+    if(timerID){
+        clearTimeout(timerID);
+    }
+    let currentFile = activeFile;
+    timerID = setTimeout(() => {
+        localStorage.setItem(currentFile.uniquePath, v);
+        $('#lastsaved').html('saved: ' + new Date().toLocaleString());
+        $('#lastsaved').fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
+        preMemo = v;
+    }, 1000);
+}
+
+function findRecursive(folder, word){
+    for(const file of folder.files){
+        const v = localStorage.getItem(file.uniquePath) || '';
+        if(v.indexOf(word) >= 0){
+            // console.log(`found: [${word}] search[${v}]`);
+            file.markFound();
+        }else{
+            // console.log(`not found: [${word}] search[${v}]`);
+        }
+    }
+    for(const subFolder of folder.folders){
+        findRecursive(subFolder, word);
+    }
+}
 
 function activeFolderChanged(folder, folderOnly){
     console.log('controller: activeFolderChanged: ' + folder.name);
@@ -53,9 +109,13 @@ function activeFileChanged(file, preFile){
     $('#memo').prop('disabled', file == null);
 
     if(preFile){
+        if(timerID){
+            clearTimeout(timerID);
+        }
         localStorage.setItem(preFile.uniquePath, $('#memo').val());
     }
     $('#memo').val('');
+    $('#lastsaved').html('');
     if(file){
         $('#memo').val(localStorage.getItem(file.uniquePath));
     }

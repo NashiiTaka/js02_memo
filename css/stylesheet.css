@@ -1,0 +1,86 @@
+* {
+    color: #222222;
+    box-sizing: border-box;
+    line-height: 2;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 30px 0;
+}
+
+header {
+    text-align: center;
+}
+
+main {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.div-left-pain-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.div-left-pain-header * {
+    height: 30px;
+    vertical-align: middle;
+}
+
+.div-left-pain-header img {
+    margin-right: 5px;
+}
+
+.div-left-pain-wrapper {
+    width: 300px;
+    /* background-color: red; */
+}**
+
+.div-right-pain-wrapper {
+    width: 80%;
+    /* IE8以下とAndroid4.3以下用フォールバック */
+    width: -webkit-calc(100% - 300px);
+    width: calc(100% - 300px);
+    background-color: yellow;
+}
+
+.div-right-pain-wrapper textarea{
+    margin-left: 30px;
+}
+
+.explorer {
+    /* background-color: red; */
+}
+
+ul.dir li {
+    font-size: 18px;
+    padding-left: 35px;
+    list-style-type: none;
+    background-repeat: no-repeat;
+    background-position: 0px 2px;
+}
+.selected-folder{
+    background-color: lightsteelblue;
+}
+
+li.folder {
+    background-image: url('/img/folder.png');
+    background-size: 30px;
+}
+
+li.file {
+    background-image: url('/img/file.png');
+    background-size: 30px;
+    height: 30px;
+}
+
+.selected-file{
+    background-color: darkkhaki;
+}
+
+footer {
+    text-align: center;
+}
